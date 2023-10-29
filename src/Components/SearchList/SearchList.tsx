@@ -10,7 +10,16 @@ class SearchList extends React.Component<typeProps, typeState> {
         {this.props.searchList !== null ? (
           this.props.searchList.length ? (
             this.props.searchList.map((item) => {
-              return <div key={item.id}>{item.name}</div>;
+              return (
+                <div key={item.id} className={classes.itemWrapper}>
+                  <img
+                    src={item.avatarUrl}
+                    alt={item.name}
+                    className={classes.itemImage}
+                  />
+                  {item.name}
+                </div>
+              );
             })
           ) : (
             <div>The search has not given any results</div>

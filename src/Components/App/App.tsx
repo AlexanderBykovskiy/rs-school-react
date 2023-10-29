@@ -4,6 +4,7 @@ import ThrowError from "../ThrowError/ThrowError";
 import SearchField from "../SearchField/SearchField";
 import SearchList from "../SearchList/SearchList";
 import { getSearchUserList, getUserList } from "./api";
+import classes from "./App.style.module.css";
 
 class App extends React.Component<typeAppProps, typeState> {
   constructor(props: typeAppProps) {
@@ -76,15 +77,17 @@ class App extends React.Component<typeAppProps, typeState> {
     return (
       <main>
         <ThrowError />
-        <SearchField
-          searchValue={this.state.searchFieldValue}
-          onChangeValue={this.onSearchValue}
-          onSearch={this.onSearchClick}
-        />
-        <SearchList
-          searchList={this.state.searchList}
-          isLoading={this.state.isFetchingData}
-        />
+        <div className={classes.wrapper}>
+          <SearchField
+            searchValue={this.state.searchFieldValue}
+            onChangeValue={this.onSearchValue}
+            onSearch={this.onSearchClick}
+          />
+          <SearchList
+            searchList={this.state.searchList}
+            isLoading={this.state.isFetchingData}
+          />
+        </div>
       </main>
     );
   }
