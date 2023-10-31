@@ -1,0 +1,36 @@
+.wrapper {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #c00
+}
+
+.container {
+    width: 350px;
+}
+
+.header {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.headerIcon {
+    width: 50px;
+    height: 50px;
+}
+
+.summary {
+    cursor: pointer;
+    color: #900;
+}
+
+.errorText {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    color: #666;
+}

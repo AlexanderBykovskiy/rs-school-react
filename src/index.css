@@ -1,0 +1,10 @@
+* {
+    font-family: Arial, sans-serif;
+}
+
+body {
+    position: relative;
+    margin: 0;
+    min-height: calc(100vh - 40px);
+    padding: 20px;
+}
