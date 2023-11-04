@@ -4,14 +4,6 @@ export interface typeUserItem {
   avatarUrl: string;
 }
 
-export interface typeState {
-  searchFieldValue: string;
-  searchList: typeUserItem[] | null;
-  isFetchingData: boolean;
-}
-
-export interface typeAppProps {}
-
 export interface typeUserResponseItem {
   id: number;
   login: string;
