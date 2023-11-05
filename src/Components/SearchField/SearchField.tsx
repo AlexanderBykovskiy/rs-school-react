@@ -1,8 +1,10 @@
 import React from "react";
 import { typeProps } from "./SearchField.types";
 import classes from "./SearchField.style.module.css";
+import ThrowError from "../ThrowError/ThrowError";
 
 const SearchField: React.FC<typeProps> = ({
+  dataIsLoading,
   searchValue,
   onSearch,
   onChangeValue,
@@ -17,10 +19,14 @@ const SearchField: React.FC<typeProps> = ({
       <input
         value={searchValue}
         onChange={(e) => onChangeValue(e.target.value)}
-        placeholder="Input phrase"
+        placeholder="Название фильма"
         className={classes.inputField}
       />
-      <button type="submit" className={classes.submitButton}>
+      <button
+        type="submit"
+        disabled={dataIsLoading}
+        className={classes.submitButton}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className={classes.submitIcon}
@@ -35,8 +41,9 @@ const SearchField: React.FC<typeProps> = ({
           <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
           <path d="M21 21l-6 -6"></path>
         </svg>
-        <span>Search</span>
+        <span>Поиск</span>
       </button>
+      <ThrowError />
     </form>
   );
 };

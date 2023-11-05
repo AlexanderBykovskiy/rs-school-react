@@ -1,62 +1,105 @@
 import React, { useEffect, useState } from "react";
-import { typeUserItem } from "./App.types";
-import ThrowError from "../ThrowError/ThrowError";
 import SearchField from "../SearchField/SearchField";
 import SearchList from "../SearchList/SearchList";
-import { getSearchUserList, getUserList } from "./api";
+import { getSearchMovieList, getMovieList } from "../API/api";
 import classes from "./App.style.module.css";
+import { typeMovieItem, typeMovieResponse } from "../API/api.types";
+import { defaultPagination } from "../Pagination/Pagination.constants";
+import { typePaginationObj } from "../Pagination/Pagination.types";
+import { Outlet, useSearchParams } from "react-router-dom";
+import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 
 const App: React.FC = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const perPage = Number(searchParams.get("per_page"));
+
   const [searchFieldValue, setSearchFieldValue] = useState<string>("");
-  const [searchList, setSearchList] = useState<null | typeUserItem[]>(null);
+  const [searchList, setSearchList] = useState<null | typeMovieItem[]>(null);
   const [isFetchingData, setIsFetchingData] = useState<boolean>(false);
+  const [pagination, setPagination] =
+    useState<typePaginationObj>(defaultPagination);
 
   const onSearchValue = (newValue: string) => {
     if (newValue.trim() === "") {
-      localStorage.removeItem("phrase");
-      getData().then();
+      searchParams.delete("query");
+      searchParams.delete("page");
+      getData(1, perPage ?? 20).then();
+      setSearchParams(searchParams);
     }
     setSearchFieldValue(newValue);
   };
 
   const onSearchClick = async () => {
     const phrase: string = searchFieldValue.trim();
-    await getData(phrase);
-    localStorage.setItem("phrase", phrase);
+    await getData(1, perPage ?? 20, phrase);
+    const newSearchParams: {
+      query?: string;
+      page?: string;
+      per_page?: string;
+    } = {
+      page: "1",
+      per_page: perPage ? String(perPage) : "20",
+      query: phrase,
+    };
+    setSearchParams(newSearchParams);
   };
 
-  const getData = async (phrase?: string | null) => {
+  const getData = async (
+    page: number = 1,
+    perPage: number,
+    phrase?: string | null,
+  ): Promise<void> => {
     setIsFetchingData(true);
 
-    const responseData: typeUserItem[] | null = phrase
-      ? await getSearchUserList(phrase)
-      : await getUserList();
+    const responseData: typeMovieResponse | null = phrase
+      ? await getSearchMovieList(phrase, page, perPage ?? 20)
+      : await getMovieList(page, perPage ?? 20);
 
     if (responseData) {
-      setSearchList(responseData);
+      setSearchList(responseData.results);
+      setPagination({
+        ...pagination,
+        pageNumber: responseData.page,
+        totalElements: responseData.total_results,
+        totalPages: responseData.total_pages,
+      });
     }
 
     setIsFetchingData(false);
   };
 
   useEffect(() => {
-    const phrase = localStorage.getItem("phrase");
+    const phrase = searchParams.get("query");
+    const page = Number(searchParams.get("page"));
     setSearchFieldValue(phrase ?? "");
-    getData(phrase).then();
-  }, []);
+    getData(page ? page : 1, perPage ?? 20, phrase).then();
+  }, [getData]);
 
   return (
-    <main>
-      <ThrowError />
-      <div className={classes.wrapper}>
-        <SearchField
-          searchValue={searchFieldValue}
-          onChangeValue={onSearchValue}
-          onSearch={onSearchClick}
-        />
-        <SearchList searchList={searchList} isLoading={isFetchingData} />
-      </div>
-    </main>
+    <ErrorBoundary>
+      <main>
+        <div className={classes.wrapper}>
+          <div className={classes.leftSide}>
+            <SearchField
+              dataIsLoading={isFetchingData}
+              searchValue={searchFieldValue}
+              onChangeValue={onSearchValue}
+              onSearch={onSearchClick}
+            />
+            <SearchList
+              searchList={searchList}
+              isLoading={isFetchingData}
+              pagination={pagination}
+              getData={getData}
+            />
+          </div>
+          <div className={classes.rightSide}>
+            <Outlet />
+          </div>
+        </div>
+      </main>
+    </ErrorBoundary>
   );
 };
 
