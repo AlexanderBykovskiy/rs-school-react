@@ -74,7 +74,7 @@ const App: React.FC = () => {
     const page = Number(searchParams.get("page"));
     setSearchFieldValue(phrase ?? "");
     getData(page ? page : 1, perPage ?? 20, phrase).then();
-  }, [getData]);
+  }, []);
 
   return (
     <ErrorBoundary>
