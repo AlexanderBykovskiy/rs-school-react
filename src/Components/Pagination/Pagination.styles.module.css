@@ -1,0 +1,23 @@
+.wrapper {
+    margin-top: 40px;
+    width: 100%;
+    display: flex;
+    gap: 40px;
+    align-items: center;
+}
+
+.pagination {
+    flex-grow: 1;
+}
+
+.paginationContainer {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.itemsPerPage {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}

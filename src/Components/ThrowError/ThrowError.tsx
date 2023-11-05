@@ -17,6 +17,7 @@ const ThrowError: React.FC = () => {
         setIsError(true);
       }}
     >
+      <div className={classes.hint}>Throw Error</div>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className={classes.icon}
@@ -34,7 +35,6 @@ const ThrowError: React.FC = () => {
           fill="currentColor"
         ></path>
       </svg>
-      <div className={classes.hint}>Throw Error</div>
     </button>
   );
 };
