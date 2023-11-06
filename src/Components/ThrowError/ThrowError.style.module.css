@@ -1,9 +1,4 @@
 .button {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    height: 50px;
-    width: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -15,6 +10,7 @@
     z-index: 999;
     transition: all ease-in 0.15s;
     overflow: visible;
+    position: relative;
 }
 
 .button:hover {
@@ -26,7 +22,7 @@
     display: flex;
     visibility: hidden;
     position: absolute;
-    top: 55px;
+    top: 40px;
     background-color: transparent;
     color: transparent;
     border: 1px solid transparent;
@@ -44,6 +40,6 @@
 }
 
 .icon {
-    height: 40px;
-    width: 40px;
+    height: 24px;
+    width: 24px;
 }

@@ -1,4 +1,3 @@
-# React components
+# React router dom v6
 
-* React + TypeScript + Vite
-* ESlint + Prettier + Husky
+Deploy [link](https://rs-school-react-pink.vercel.app/)

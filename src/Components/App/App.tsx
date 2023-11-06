@@ -1,96 +1,106 @@
-import React from "react";
-import { typeAppProps, typeState, typeUserItem } from "./App.types";
-import ThrowError from "../ThrowError/ThrowError";
+import React, { useEffect, useState } from "react";
 import SearchField from "../SearchField/SearchField";
 import SearchList from "../SearchList/SearchList";
-import { getSearchUserList, getUserList } from "./api";
+import { getSearchMovieList, getMovieList } from "../API/api";
 import classes from "./App.style.module.css";
+import { typeMovieItem, typeMovieResponse } from "../API/api.types";
+import { defaultPagination } from "../Pagination/Pagination.constants";
+import { typePaginationObj } from "../Pagination/Pagination.types";
+import { Outlet, useSearchParams } from "react-router-dom";
+import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 
-class App extends React.Component<typeAppProps, typeState> {
-  constructor(props: typeAppProps) {
-    super(props);
-    // State of component
-    this.state = {
-      searchFieldValue: "",
-      searchList: null,
-      isFetchingData: false,
-    };
-  }
+const App: React.FC = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  // On change search field handler
-  onSearchValue = (newValue: string) => {
+  const perPage = Number(searchParams.get("per_page"));
+
+  const [searchFieldValue, setSearchFieldValue] = useState<string>("");
+  const [searchList, setSearchList] = useState<null | typeMovieItem[]>(null);
+  const [isFetchingData, setIsFetchingData] = useState<boolean>(false);
+  const [pagination, setPagination] =
+    useState<typePaginationObj>(defaultPagination);
+
+  const onSearchValue = (newValue: string) => {
     if (newValue.trim() === "") {
-      localStorage.removeItem("phrase");
+      searchParams.delete("query");
+      searchParams.delete("page");
+      getData(1, perPage ?? 20).then();
+      setSearchParams(searchParams);
     }
-    this.setState({ ...this.state, searchFieldValue: newValue });
+    setSearchFieldValue(newValue);
   };
 
-  // On click search button
-  onSearchClick = async () => {
-    const phrase = this.state.searchFieldValue.trim();
-    await this.getData();
-    localStorage.setItem("phrase", phrase);
+  const onSearchClick = async () => {
+    const phrase: string = searchFieldValue.trim();
+    await getData(1, perPage ?? 20, phrase);
+    const newSearchParams: {
+      query?: string;
+      page?: string;
+      per_page?: string;
+    } = {
+      page: "1",
+      per_page: perPage ? String(perPage) : "20",
+      query: phrase,
+    };
+    setSearchParams(newSearchParams);
   };
 
-  // Function of get user data from server
-  getData = async (phrase?: string | null) => {
-    this.setState({ ...this.state, isFetchingData: true });
+  const getData = async (
+    page: number = 1,
+    perPage: number,
+    phrase?: string | null,
+  ): Promise<void> => {
+    setIsFetchingData(true);
 
-    const responseData: typeUserItem[] | null =
-      phrase || this.state.searchFieldValue
-        ? await getSearchUserList(phrase ?? this.state.searchFieldValue)
-        : await getUserList();
+    const responseData: typeMovieResponse | null = phrase
+      ? await getSearchMovieList(phrase, page, perPage ?? 20)
+      : await getMovieList(page, perPage ?? 20);
 
     if (responseData) {
-      this.setState({
-        ...this.state,
-        searchFieldValue: phrase ?? this.state.searchFieldValue,
-        searchList: responseData,
-        isFetchingData: false,
+      setSearchList(responseData.results);
+      setPagination({
+        ...pagination,
+        pageNumber: responseData.page,
+        totalElements: responseData.total_results,
+        totalPages: responseData.total_pages,
       });
-    } else {
-      this.setState({ ...this.state, isFetchingData: false });
     }
+
+    setIsFetchingData(false);
   };
 
-  // Default user list
-  componentDidMount() {
-    const phrase = localStorage.getItem("phrase");
-    this.getData(phrase).then();
-  }
+  useEffect(() => {
+    const phrase = searchParams.get("query");
+    const page = Number(searchParams.get("page"));
+    setSearchFieldValue(phrase ?? "");
+    getData(page ? page : 1, perPage ?? 20, phrase).then();
+  }, []);
 
-  // Clear user list
-  componentDidUpdate(
-    prevProps: Readonly<typeAppProps>,
-    prevState: Readonly<typeState>,
-  ) {
-    if (
-      prevState.searchFieldValue !== this.state.searchFieldValue &&
-      prevState.searchFieldValue &&
-      this.state.searchFieldValue === ""
-    ) {
-      this.getData().then();
-    }
-  }
-
-  render(): React.ReactElement {
-    return (
+  return (
+    <ErrorBoundary>
       <main>
-        <ThrowError />
         <div className={classes.wrapper}>
-          <SearchField
-            searchValue={this.state.searchFieldValue}
-            onChangeValue={this.onSearchValue}
-            onSearch={this.onSearchClick}
-          />
-          <SearchList
-            searchList={this.state.searchList}
-            isLoading={this.state.isFetchingData}
-          />
+          <div className={classes.leftSide}>
+            <SearchField
+              dataIsLoading={isFetchingData}
+              searchValue={searchFieldValue}
+              onChangeValue={onSearchValue}
+              onSearch={onSearchClick}
+            />
+            <SearchList
+              searchList={searchList}
+              isLoading={isFetchingData}
+              pagination={pagination}
+              getData={getData}
+            />
+          </div>
+          <div className={classes.rightSide}>
+            <Outlet />
+          </div>
         </div>
       </main>
-    );
-  }
-}
+    </ErrorBoundary>
+  );
+};
 
 export default App;

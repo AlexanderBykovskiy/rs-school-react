@@ -1,8 +1,9 @@
-import { typeUserItem } from "../App/App.types";
-
-export interface typeState {}
+import { typeMovieItem } from "../API/api.types";
+import { typePaginationObj } from "../Pagination/Pagination.types";
 
 export interface typeProps {
-  searchList: typeUserItem[] | null;
+  searchList: typeMovieItem[] | null;
   isLoading: boolean;
+  pagination: typePaginationObj;
+  getData: (page: number, perPage: number, phrase?: string) => Promise<void>;
 }
