@@ -1,14 +1,13 @@
-import React from "react";
-import { typePaginationProps } from "./Pagination.types";
+import React, { useContext } from "react";
 import classes from "./Pagination.styles.module.css";
 import PaginationButton from "./PaginationButton";
 import PaginationPlaceholder from "./PaginationPlaceholder";
 import { useSearchParams } from "react-router-dom";
+import { AppContext } from "../AppContextProvider/AppContextProvider";
 
-const Pagination: React.FC<typePaginationProps> = ({
-  paginationObj,
-  getData,
-}) => {
+const Pagination: React.FC = () => {
+  const { pagination: paginationObj, getData } = useContext(AppContext);
+
   const [searchParams, setSearchParams] = useSearchParams();
 
   const query = searchParams.get("query");
@@ -38,7 +37,14 @@ const Pagination: React.FC<typePaginationProps> = ({
             />
           )}
 
-          {paginationObj.pageNumber > 2 && <PaginationPlaceholder />}
+          {paginationObj.pageNumber > 3 && <PaginationPlaceholder />}
+
+          {paginationObj.pageNumber > 2 && (
+            <PaginationButton
+              onRedirect={() => onGoToPage(paginationObj.pageNumber - 2)}
+              title={(paginationObj.pageNumber - 2).toString()}
+            />
+          )}
 
           {paginationObj.pageNumber > 1 && (
             <PaginationButton
@@ -57,6 +63,13 @@ const Pagination: React.FC<typePaginationProps> = ({
             <PaginationButton
               onRedirect={() => onGoToPage(paginationObj.pageNumber + 1)}
               title={(paginationObj.pageNumber + 1).toString()}
+            />
+          )}
+
+          {paginationObj.pageNumber + 1 < paginationObj.totalPages && (
+            <PaginationButton
+              onRedirect={() => onGoToPage(paginationObj.pageNumber + 2)}
+              title={(paginationObj.pageNumber + 2).toString()}
             />
           )}
 

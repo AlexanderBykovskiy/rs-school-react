@@ -7,7 +7,8 @@ import { typeMovieItem, typeMovieResponse } from "../API/api.types";
 import { defaultPagination } from "../Pagination/Pagination.constants";
 import { typePaginationObj } from "../Pagination/Pagination.types";
 import { Outlet, useSearchParams } from "react-router-dom";
-import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
+import AppContextProvider from "../AppContextProvider/AppContextProvider";
+import SearchFieldContextProvider from "../SearchFieldContextProvider/SearchFieldContextProvider";
 
 const App: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -77,29 +78,34 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <ErrorBoundary>
+    <AppContextProvider
+      contextValue={{
+        movieList: searchList,
+        isFetchingData: isFetchingData,
+        pagination: pagination,
+        getData: getData,
+      }}
+    >
       <main>
         <div className={classes.wrapper}>
           <div className={classes.leftSide}>
-            <SearchField
-              dataIsLoading={isFetchingData}
-              searchValue={searchFieldValue}
-              onChangeValue={onSearchValue}
-              onSearch={onSearchClick}
-            />
-            <SearchList
-              searchList={searchList}
-              isLoading={isFetchingData}
-              pagination={pagination}
-              getData={getData}
-            />
+            <SearchFieldContextProvider
+              contextValue={{
+                searchValue: searchFieldValue,
+                onChangeValue: onSearchValue,
+                onSearch: onSearchClick,
+              }}
+            >
+              <SearchField />
+            </SearchFieldContextProvider>
+            <SearchList />
           </div>
           <div className={classes.rightSide}>
             <Outlet />
           </div>
         </div>
       </main>
-    </ErrorBoundary>
+    </AppContextProvider>
   );
 };
 

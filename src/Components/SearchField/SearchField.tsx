@@ -1,14 +1,15 @@
-import React from "react";
-import { typeProps } from "./SearchField.types";
+import React, { useContext } from "react";
 import classes from "./SearchField.style.module.css";
 import ThrowError from "../ThrowError/ThrowError";
+import { AppContext } from "../AppContextProvider/AppContextProvider";
+import { SearchFieldContext } from "../SearchFieldContextProvider/SearchFieldContextProvider";
 
-const SearchField: React.FC<typeProps> = ({
-  dataIsLoading,
-  searchValue,
-  onSearch,
-  onChangeValue,
-}) => {
+const SearchField: React.FC = () => {
+  const { searchValue, onChangeValue, onSearch } =
+    useContext(SearchFieldContext);
+
+  const { isFetchingData } = useContext(AppContext);
+
   const onSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSearch();
@@ -17,14 +18,14 @@ const SearchField: React.FC<typeProps> = ({
   return (
     <form onSubmit={(e) => onSubmitForm(e)} className={classes.wrapper}>
       <input
-        value={searchValue}
+        value={searchValue ?? ""}
         onChange={(e) => onChangeValue(e.target.value)}
         placeholder="Название фильма"
         className={classes.inputField}
       />
       <button
         type="submit"
-        disabled={dataIsLoading}
+        disabled={isFetchingData}
         className={classes.submitButton}
       >
         <svg

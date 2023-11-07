@@ -5,11 +5,6 @@ export interface typePaginationObj {
   totalPages: number;
 }
 
-export interface typePaginationProps {
-  paginationObj: typePaginationObj;
-  getData: (page: number, perPage: number, phrase?: string) => Promise<void>;
-}
-
 export interface typePaginationButtonProps {
   title: string;
   onRedirect: () => void;

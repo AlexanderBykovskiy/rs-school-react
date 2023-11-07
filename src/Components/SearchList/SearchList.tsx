@@ -1,18 +1,19 @@
-import React from "react";
-import { typeProps } from "./SearchList.types";
+import React, { useContext } from "react";
 import classes from "./SearchList.styles.module.css";
 import Loader from "../Loader/Loader";
 import { IMG_URL } from "../API/api.constants";
 import noImagePath from "../../assets/images/no-image.jpg";
 import Pagination from "../Pagination/Pagination";
 import { Link, useLocation } from "react-router-dom";
+import { AppContext } from "../AppContextProvider/AppContextProvider";
 
-const SearchList: React.FC<typeProps> = ({
-  searchList,
-  pagination,
-  isLoading,
-  getData,
-}) => {
+const SearchList: React.FC = () => {
+  const {
+    isFetchingData,
+    movieList: searchList,
+    pagination,
+  } = useContext(AppContext);
+
   const location = useLocation();
 
   return (
@@ -55,11 +56,9 @@ const SearchList: React.FC<typeProps> = ({
           })}
       </div>
 
-      {searchList && pagination.totalPages > 1 && (
-        <Pagination paginationObj={pagination} getData={getData} />
-      )}
+      {searchList && pagination.totalPages > 1 && <Pagination />}
 
-      {isLoading && <Loader />}
+      {isFetchingData && <Loader />}
     </div>
   );
 };
