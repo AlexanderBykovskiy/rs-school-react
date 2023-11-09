@@ -98,7 +98,9 @@ const App: React.FC = () => {
             >
               <SearchField />
             </SearchFieldContextProvider>
-            <SearchList />
+            <div className={classes.contentContainer}>
+              <SearchList />
+            </div>
           </div>
           <div className={classes.rightSide}>
             <Outlet />
