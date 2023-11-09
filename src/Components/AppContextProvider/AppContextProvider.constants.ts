@@ -9,4 +9,6 @@ export const defaultContext: typeAppContext = {
     totalPages: 0,
     totalElements: 0,
   },
+  getData: (page, perPage, phrase) =>
+    new Promise(() => console.log(`getData(${page}, ${perPage}, ${phrase})`)),
 };
