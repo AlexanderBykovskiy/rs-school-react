@@ -4,7 +4,7 @@ import { PropsWithChildren } from "react";
 
 export interface typeAppContext {
   movieList: typeMovieItem[] | null;
-  getData: (page: number, perPage: number, phrase?: string) => Promise<void>;
+  getData?: (page: number, perPage: number, phrase?: string) => Promise<void>;
   isFetchingData: boolean;
   pagination: typePaginationObj;
 }
