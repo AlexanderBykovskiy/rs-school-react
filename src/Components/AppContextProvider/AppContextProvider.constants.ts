@@ -1,6 +1,6 @@
 import { typeAppContext } from "./AppContextProvider.types";
 
-export const defaultContext: typeAppContext = {
+export const defaultContext: Omit<typeAppContext, "getData"> = {
   movieList: null,
   isFetchingData: false,
   pagination: {
@@ -9,6 +9,4 @@ export const defaultContext: typeAppContext = {
     totalPages: 0,
     totalElements: 0,
   },
-  getData: (page, perPage, phrase) =>
-    new Promise(() => console.log(`getData(${page}, ${perPage}, ${phrase})`)),
 };
