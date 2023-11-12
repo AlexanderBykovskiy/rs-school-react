@@ -1,34 +1,46 @@
-import React from "react";
-import { typeProps, typeState } from "./SearchList.types";
+import React, { useContext } from "react";
 import classes from "./SearchList.styles.module.css";
 import Loader from "../Loader/Loader";
+import Pagination from "../Pagination/Pagination";
+import { AppContext } from "../AppContextProvider/AppContextProvider";
+import { SearchListItem } from "./SearchListItem";
 
-class SearchList extends React.Component<typeProps, typeState> {
-  render() {
-    return (
-      <div className={classes.wrapper}>
-        {this.props.searchList !== null ? (
-          this.props.searchList.length ? (
-            this.props.searchList.map((item) => {
-              return (
-                <div key={item.id} className={classes.itemWrapper}>
-                  <img
-                    src={item.avatarUrl}
-                    alt={item.name}
-                    className={classes.itemImage}
-                  />
-                  {item.name}
-                </div>
-              );
-            })
-          ) : (
-            <div>The search has not given any results</div>
-          )
-        ) : undefined}
-        {this.props.isLoading && <Loader />}
+const SearchList: React.FC = () => {
+  const {
+    isFetchingData,
+    movieList: searchList,
+    pagination,
+  } = useContext(AppContext);
+
+  return (
+    <div className={classes.container} data-testid="search-list">
+      {searchList && searchList.length === 0 && (
+        <div data-testid="search-list-empty">
+          Поиск не дал результатов. Попробуйте еще раз.
+        </div>
+      )}
+      <div className={classes.wrapper} data-testid="search-list-not-empty">
+        {searchList &&
+          searchList.length > 0 &&
+          searchList.map((item) => {
+            const releaseData = new Date(item.release_date);
+            return (
+              <SearchListItem
+                id={item.id}
+                key={item.id}
+                title={item.title}
+                poster_path={item.poster_path}
+                releaseData={releaseData}
+              />
+            );
+          })}
       </div>
-    );
-  }
-}
+
+      {searchList && pagination.totalPages > 1 && <Pagination />}
+
+      {isFetchingData && <Loader />}
+    </div>
+  );
+};
 
 export default SearchList;

@@ -18,7 +18,7 @@ class ErrorBoundary extends React.Component<typeProps, typeState> {
   render() {
     if (this.state.errorInfo) {
       return (
-        <div className={classes.wrapper}>
+        <div className={classes.wrapper} data-testid="error-boundary-component">
           <div className={classes.container}>
             <div className={classes.header}>
               <svg
