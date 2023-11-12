@@ -34,7 +34,7 @@ const Details: React.FC = () => {
 
   return (
     <>
-      <div className={classes.wrapper}>
+      <div className={classes.wrapper} data-testid="details">
         <Link
           to="/"
           className={classes.closeButton}

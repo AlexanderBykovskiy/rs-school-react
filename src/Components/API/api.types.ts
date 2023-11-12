@@ -6,17 +6,17 @@ export interface typeResponsePagination {
 
 export interface typeMovieItem {
   adult: boolean;
-  backdrop_path: string;
-  genre_ids: number[];
+  backdrop_path?: string;
+  genre_ids?: number[];
   id: number;
   original_language: string;
   original_title: string;
-  overview: string;
+  overview?: string;
   popularity: number;
-  poster_path: string;
+  poster_path?: string;
   release_date: string;
   title: string;
-  video: boolean;
+  video?: boolean;
   vote_average: number;
   vote_count: number;
 }

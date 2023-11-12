@@ -13,11 +13,13 @@ const SearchList: React.FC = () => {
   } = useContext(AppContext);
 
   return (
-    <div className={classes.container}>
+    <div className={classes.container} data-testid="search-list">
       {searchList && searchList.length === 0 && (
-        <div>Поиск не дал результатов. Попробуйте еще раз.</div>
+        <div data-testid="search-list-empty">
+          Поиск не дал результатов. Попробуйте еще раз.
+        </div>
       )}
-      <div className={classes.wrapper}>
+      <div className={classes.wrapper} data-testid="search-list-not-empty">
         {searchList &&
           searchList.length > 0 &&
           searchList.map((item) => {

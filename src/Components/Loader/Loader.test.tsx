@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import { render, screen } from "@testing-library/react";
 import Loader from "./Loader";
+import "@testing-library/jest-dom";
 
 describe("Testing Loader component", () => {
   let loader: undefined | HTMLElement;
@@ -15,7 +16,7 @@ describe("Testing Loader component", () => {
   afterEach(() => {});
 
   test("is exist", () => {
-    expect(loader?.className).include("wrapper");
+    expect(loader).toBeInTheDocument();
   });
 
   test("contain Loading... message", () => {

@@ -10,12 +10,15 @@ const ThrowError: React.FC = () => {
     }
   }, [isError]);
 
+  const onThrowError = () => {
+    setIsError(true);
+  };
+
   return (
     <button
       className={classes.button}
-      onClick={() => {
-        setIsError(true);
-      }}
+      onClick={onThrowError}
+      data-testid="throw-error-button"
     >
       <div className={classes.hint}>Throw Error</div>
       <svg

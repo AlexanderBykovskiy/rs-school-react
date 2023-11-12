@@ -18,16 +18,21 @@ export const SearchListItem: React.FC<typeSearchListItemProps> = ({
       to={"/" + id.toString() + location.search}
       key={id}
       className={classes.itemWrapper}
+      data-testid="search-list-item"
     >
       <div className={classes.posterWrapper}>
         <img
           src={poster_path ? `${IMG_URL}/${poster_path}` : noImagePath}
           alt={title}
+          data-testid="search-list-item-image"
         />
       </div>
       <div className={classes.textBlock}>
-        <div>{title}</div>
-        <div className={classes.itemCountry}>
+        <div data-testid="search-list-item-title">{title}</div>
+        <div
+          className={classes.itemRelease}
+          data-testid="search-list-item-release"
+        >
           {releaseData.toLocaleDateString(undefined, {
             year: "numeric",
           })}

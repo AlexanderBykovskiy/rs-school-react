@@ -11,6 +11,7 @@ const PaginationButton: React.FC<typePaginationButtonProps> = ({
     <button
       onClick={onRedirect}
       className={`${classes.button}${isActive ? " " + classes.active : ""}`}
+      data-testid="pagination-button"
     >
       {title}
     </button>

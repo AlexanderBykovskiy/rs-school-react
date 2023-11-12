@@ -27,22 +27,26 @@ const Pagination: React.FC = () => {
   };
 
   return (
-    <div className={classes.wrapper}>
+    <div className={classes.wrapper} data-testid="pagination">
       <div className={classes.pagination}>
         <div className={classes.paginationContainer}>
           {paginationObj.pageNumber !== 1 && (
             <PaginationButton
               onRedirect={() => onGoToPage(paginationObj.pageNumber - 1)}
               title="&lsaquo;"
+              data-testid="pagination-first"
             />
           )}
 
-          {paginationObj.pageNumber > 3 && <PaginationPlaceholder />}
+          {paginationObj.pageNumber > 3 && (
+            <PaginationPlaceholder data-testid="pagination-placeholder-start" />
+          )}
 
           {paginationObj.pageNumber > 2 && (
             <PaginationButton
               onRedirect={() => onGoToPage(paginationObj.pageNumber - 2)}
               title={(paginationObj.pageNumber - 2).toString()}
+              data-testid="pagination-second"
             />
           )}
 
@@ -50,6 +54,7 @@ const Pagination: React.FC = () => {
             <PaginationButton
               onRedirect={() => onGoToPage(paginationObj.pageNumber - 1)}
               title={(paginationObj.pageNumber - 1).toString()}
+              data-testid="pagination-third"
             />
           )}
 
@@ -57,12 +62,14 @@ const Pagination: React.FC = () => {
             onRedirect={() => onGoToPage(paginationObj.pageNumber)}
             title={paginationObj.pageNumber.toString()}
             isActive={true}
+            data-testid="pagination-active"
           />
 
           {paginationObj.pageNumber < paginationObj.totalPages && (
             <PaginationButton
               onRedirect={() => onGoToPage(paginationObj.pageNumber + 1)}
               title={(paginationObj.pageNumber + 1).toString()}
+              data-testid="pagination-pre-penult"
             />
           )}
 
@@ -70,17 +77,19 @@ const Pagination: React.FC = () => {
             <PaginationButton
               onRedirect={() => onGoToPage(paginationObj.pageNumber + 2)}
               title={(paginationObj.pageNumber + 2).toString()}
+              data-testid="pagination-penult"
             />
           )}
 
           {paginationObj.pageNumber + 2 < paginationObj.totalPages && (
-            <PaginationPlaceholder />
+            <PaginationPlaceholder data-testid="pagination-placeholder-end" />
           )}
 
           {paginationObj.pageNumber !== paginationObj.totalPages && (
             <PaginationButton
               onRedirect={() => onGoToPage(paginationObj.pageNumber + 1)}
               title="&rsaquo;"
+              data-testid="pagination-last"
             />
           )}
         </div>
