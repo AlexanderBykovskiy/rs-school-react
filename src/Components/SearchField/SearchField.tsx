@@ -10,23 +10,29 @@ const SearchField: React.FC = () => {
 
   const { isFetchingData } = useContext(AppContext);
 
-  const onSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSearch();
+    await onSearch();
   };
 
   return (
-    <form onSubmit={(e) => onSubmitForm(e)} className={classes.wrapper}>
+    <form
+      onSubmit={(e) => onSubmitForm(e)}
+      className={classes.wrapper}
+      data-testid="search-form"
+    >
       <input
         value={searchValue ?? ""}
         onChange={(e) => onChangeValue(e.target.value)}
         placeholder="Название фильма"
         className={classes.inputField}
+        data-testid="search-input"
       />
       <button
         type="submit"
         disabled={isFetchingData}
         className={classes.submitButton}
+        data-testid="search-button"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

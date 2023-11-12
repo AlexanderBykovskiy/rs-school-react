@@ -58,19 +58,24 @@ const Details: React.FC = () => {
         {isFetchingData && <Loader />}
         {dataObj && (
           <div className={classes.contentBlock}>
-            <div className={classes.image}>
+            <div className={classes.image} data-testid="poster">
               <img src={`${IMG_URL}/${dataObj.poster_path}`} alt="" />
             </div>
 
             <div className={classes.titleBlock}>
-              <div className={classes.currentTitle}>{dataObj.title}</div>
-              <div className={classes.originalTitle}>
+              <div className={classes.currentTitle} data-testid="title">
+                {dataObj.title}
+              </div>
+              <div
+                className={classes.originalTitle}
+                data-testid="original-title"
+              >
                 {dataObj.original_title} ({dataObj.original_language})
               </div>
             </div>
 
             <div className={classes.infoBlock}>
-              <div>
+              <div data-testid="release-date">
                 <span>Дата релиза:</span>{" "}
                 {dateOfRelease &&
                   dateOfRelease.toLocaleDateString(undefined, {
@@ -79,13 +84,13 @@ const Details: React.FC = () => {
                     year: "numeric",
                   })}
               </div>
-              <div>
+              <div data-testid="popularity">
                 <span>Популярность:</span> {dataObj.popularity}
               </div>
-              <div>
+              <div data-testid="vote-average">
                 <span>Средняя оценка:</span> {dataObj.vote_average}
               </div>
-              <div>
+              <div data-testid="vote-count">
                 <span>Всего оценок:</span> {dataObj.vote_count}
               </div>
             </div>

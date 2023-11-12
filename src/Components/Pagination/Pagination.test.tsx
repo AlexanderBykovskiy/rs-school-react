@@ -63,6 +63,7 @@ describe("Testing Pagination component", () => {
       if (buttonList.length && buttonList[0])
         await userEvent.click(buttonList[0]);
       expect(getData).toBeCalled();
+      expect(location.search.includes("page=1")).toBeTruthy();
     });
   });
 

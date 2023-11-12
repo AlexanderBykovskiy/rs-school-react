@@ -1,6 +1,6 @@
-import { typeAppContext } from "./AppContextProvider.types";
+import { typeDefaultAppContext } from "./AppContextProvider.types";
 
-export const defaultContext: Omit<typeAppContext, "getData"> = {
+export const defaultContext: typeDefaultAppContext = {
   movieList: null,
   isFetchingData: false,
   pagination: {

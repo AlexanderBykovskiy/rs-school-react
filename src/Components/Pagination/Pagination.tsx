@@ -4,9 +4,12 @@ import PaginationButton from "./PaginationButton";
 import PaginationPlaceholder from "./PaginationPlaceholder";
 import { useSearchParams } from "react-router-dom";
 import { AppContext } from "../AppContextProvider/AppContextProvider";
+import { typeAppContext } from "../AppContextProvider/AppContextProvider.types";
 
 const Pagination: React.FC = () => {
-  const { pagination: paginationObj, getData } = useContext(AppContext);
+  const { pagination: paginationObj, getData } = useContext(
+    AppContext,
+  ) as typeAppContext;
 
   const [searchParams, setSearchParams] = useSearchParams();
 

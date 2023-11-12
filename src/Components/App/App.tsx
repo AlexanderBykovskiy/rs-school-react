@@ -86,7 +86,7 @@ const App: React.FC = () => {
         getData: getData,
       }}
     >
-      <main>
+      <main data-testid="main-tag">
         <div className={classes.wrapper}>
           <div className={classes.leftSide}>
             <SearchFieldContextProvider

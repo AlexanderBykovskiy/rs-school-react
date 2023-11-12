@@ -2,11 +2,12 @@ import React from "react";
 import {
   typeAppContext,
   typeContextProviderProps,
+  typeDefaultAppContext,
 } from "./AppContextProvider.types";
 import { defaultContext } from "./AppContextProvider.constants";
 import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 
-export const AppContext: React.Context<typeAppContext> =
+export const AppContext: React.Context<typeAppContext | typeDefaultAppContext> =
   React.createContext(defaultContext);
 
 const AppContextProvider: React.FC<typeContextProviderProps> = ({

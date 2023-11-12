@@ -9,6 +9,8 @@ export interface typeAppContext {
   pagination: typePaginationObj;
 }
 
+export type typeDefaultAppContext = Omit<typeAppContext, "getData">;
+
 export interface typeContextProviderProps extends PropsWithChildren {
-  contextValue: typeAppContext;
+  contextValue: typeAppContext | typeDefaultAppContext;
 }
