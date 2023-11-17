@@ -5,6 +5,10 @@ export interface typePaginationObj {
   totalPages: number;
 }
 
+export type typePaginationProps = typePaginationObj & {
+  getMovieListData: (pageNumber: number, searchPhrase: string) => Promise<void>;
+};
+
 export interface typePaginationButtonProps {
   title: string;
   onRedirect: () => void;

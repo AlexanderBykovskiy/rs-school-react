@@ -1,96 +1,92 @@
-import React, { useContext } from "react";
+import React from "react";
 import classes from "./Pagination.styles.module.css";
 import PaginationButton from "./PaginationButton";
 import PaginationPlaceholder from "./PaginationPlaceholder";
+import { typePaginationProps } from "./Pagination.types";
+import { useAppSelector } from "../store/store";
 import { useSearchParams } from "react-router-dom";
-import { AppContext } from "../AppContextProvider/AppContextProvider";
-import { typeAppContext } from "../AppContextProvider/AppContextProvider.types";
 
-const Pagination: React.FC = () => {
-  const { pagination: paginationObj, getData } = useContext(
-    AppContext,
-  ) as typeAppContext;
-
+const Pagination: React.FC<typePaginationProps> = ({
+  pageNumber,
+  totalPages,
+  getMovieListData,
+}) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const query = searchParams.get("query");
-  const perPage = searchParams.get("per_page");
+  const searchValue = useAppSelector((state) => state.search.searchValue);
 
   const onGoToPage = async (pageNumber: number) => {
-    const newSearchParamsObj: {
-      query?: string;
-      page?: string;
-      per_page?: string;
-    } = {};
-    if (query) newSearchParamsObj.query = query;
-    if (perPage) newSearchParamsObj.per_page = perPage;
-    newSearchParamsObj.page = String(pageNumber);
-    await getData(pageNumber, Number(perPage) ?? 20, query ?? undefined);
-    setSearchParams(newSearchParamsObj);
+    if (pageNumber === 1) {
+      searchParams.delete("page");
+      setSearchParams(searchParams);
+    } else {
+      setSearchParams({ page: String(pageNumber) });
+    }
+    await getMovieListData(pageNumber, searchValue);
   };
 
   return (
     <div className={classes.wrapper} data-testid="pagination">
       <div className={classes.pagination}>
         <div className={classes.paginationContainer}>
-          {paginationObj.pageNumber !== 1 && (
+          {pageNumber !== 1 && (
             <PaginationButton
-              onRedirect={() => onGoToPage(paginationObj.pageNumber - 1)}
+              onRedirect={() => onGoToPage(pageNumber - 1)}
               title="&lsaquo;"
               data-testid="pagination-first"
             />
           )}
 
-          {paginationObj.pageNumber > 3 && (
+          {pageNumber > 3 && (
             <PaginationPlaceholder data-testid="pagination-placeholder-start" />
           )}
 
-          {paginationObj.pageNumber > 2 && (
+          {pageNumber > 2 && (
             <PaginationButton
-              onRedirect={() => onGoToPage(paginationObj.pageNumber - 2)}
-              title={(paginationObj.pageNumber - 2).toString()}
+              onRedirect={() => onGoToPage(pageNumber - 2)}
+              title={(pageNumber - 2).toString()}
               data-testid="pagination-second"
             />
           )}
 
-          {paginationObj.pageNumber > 1 && (
+          {pageNumber > 1 && (
             <PaginationButton
-              onRedirect={() => onGoToPage(paginationObj.pageNumber - 1)}
-              title={(paginationObj.pageNumber - 1).toString()}
+              onRedirect={() => onGoToPage(pageNumber - 1)}
+              title={(pageNumber - 1).toString()}
               data-testid="pagination-third"
             />
           )}
 
           <PaginationButton
-            onRedirect={() => onGoToPage(paginationObj.pageNumber)}
-            title={paginationObj.pageNumber.toString()}
+            onRedirect={() => onGoToPage(pageNumber)}
+            title={pageNumber.toString()}
             isActive={true}
             data-testid="pagination-active"
           />
 
-          {paginationObj.pageNumber < paginationObj.totalPages && (
+          {pageNumber < totalPages && (
             <PaginationButton
-              onRedirect={() => onGoToPage(paginationObj.pageNumber + 1)}
-              title={(paginationObj.pageNumber + 1).toString()}
+              onRedirect={() => onGoToPage(pageNumber + 1)}
+              title={(pageNumber + 1).toString()}
               data-testid="pagination-pre-penult"
             />
           )}
 
-          {paginationObj.pageNumber + 1 < paginationObj.totalPages && (
+          {pageNumber + 1 < totalPages && (
             <PaginationButton
-              onRedirect={() => onGoToPage(paginationObj.pageNumber + 2)}
-              title={(paginationObj.pageNumber + 2).toString()}
+              onRedirect={() => onGoToPage(pageNumber + 2)}
+              title={(pageNumber + 2).toString()}
               data-testid="pagination-penult"
             />
           )}
 
-          {paginationObj.pageNumber + 2 < paginationObj.totalPages && (
+          {pageNumber + 2 < totalPages && (
             <PaginationPlaceholder data-testid="pagination-placeholder-end" />
           )}
 
-          {paginationObj.pageNumber !== paginationObj.totalPages && (
+          {pageNumber !== totalPages && (
             <PaginationButton
-              onRedirect={() => onGoToPage(paginationObj.pageNumber + 1)}
+              onRedirect={() => onGoToPage(pageNumber + 1)}
               title="&rsaquo;"
               data-testid="pagination-last"
             />

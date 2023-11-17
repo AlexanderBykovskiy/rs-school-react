@@ -1,113 +1,69 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import SearchField from "../SearchField/SearchField";
-import SearchList from "../SearchList/SearchList";
-import { getSearchMovieList, getMovieList } from "../API/api";
 import classes from "./App.style.module.css";
-import { typeMovieItem, typeMovieResponse } from "../API/api.types";
-import { defaultPagination } from "../Pagination/Pagination.constants";
-import { typePaginationObj } from "../Pagination/Pagination.types";
-import { Outlet, useSearchParams } from "react-router-dom";
-import AppContextProvider from "../AppContextProvider/AppContextProvider";
-import SearchFieldContextProvider from "../SearchFieldContextProvider/SearchFieldContextProvider";
+import { Outlet } from "react-router-dom";
+import {
+  useLazyGetPopularListQuery,
+  useLazyGetSearchListQuery,
+} from "../API/rtkApi";
+import SearchList from "../SearchList/SearchList";
+import { useAppDispatch, useAppSelector } from "../store/store";
+import {
+  setMovieList,
+  setMovieLoading,
+  setPagination,
+} from "../store/movieListReducer";
 
 const App: React.FC = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const dispatch = useAppDispatch();
 
-  const perPage = Number(searchParams.get("per_page"));
+  const searchValue = useAppSelector((state) => state.search.searchValue);
 
-  const [searchFieldValue, setSearchFieldValue] = useState<string>("");
-  const [searchList, setSearchList] = useState<null | typeMovieItem[]>(null);
-  const [isFetchingData, setIsFetchingData] = useState<boolean>(false);
-  const [pagination, setPagination] =
-    useState<typePaginationObj>(defaultPagination);
+  const [getMovieList, { isFetching: isMovieListLoading }] =
+    useLazyGetPopularListQuery();
+  const [getSearchMovieList, { isFetching: isSearchMovieListLoading }] =
+    useLazyGetSearchListQuery();
 
-  const onSearchValue = (newValue: string) => {
-    if (newValue.trim() === "") {
-      searchParams.delete("query");
-      searchParams.delete("page");
-      getData(1, perPage ?? 20).then();
-      setSearchParams(searchParams);
+  const getMovieListData = async (pageNumber: number, searchPhrase: string) => {
+    const response = searchValue
+      ? await getSearchMovieList({ pageNumber, searchPhrase }).unwrap()
+      : await getMovieList(pageNumber).unwrap();
+
+    if (response?.results) {
+      dispatch(setMovieList(response.results));
+      dispatch(
+        setPagination({
+          itemsPerPage: 20,
+          pageNumber: response.page,
+          totalElements: response.total_results,
+          totalPages: response.total_pages,
+        }),
+      );
     }
-    setSearchFieldValue(newValue);
-  };
-
-  const onSearchClick = async () => {
-    const phrase: string = searchFieldValue.trim();
-    await getData(1, perPage ?? 20, phrase);
-    const newSearchParams: {
-      query?: string;
-      page?: string;
-      per_page?: string;
-    } = {
-      page: "1",
-      per_page: perPage ? String(perPage) : "20",
-      query: phrase,
-    };
-    setSearchParams(newSearchParams);
-  };
-
-  const getData = async (
-    page: number = 1,
-    perPage: number,
-    phrase?: string | null,
-  ): Promise<void> => {
-    setIsFetchingData(true);
-
-    const responseData: typeMovieResponse | null = phrase
-      ? await getSearchMovieList(phrase, page, perPage ?? 20)
-      : await getMovieList(page, perPage ?? 20);
-
-    if (responseData) {
-      setSearchList(responseData.results);
-      setPagination({
-        ...pagination,
-        pageNumber: responseData.page,
-        totalElements: responseData.total_results,
-        totalPages: responseData.total_pages,
-      });
-    }
-
-    setIsFetchingData(false);
   };
 
   useEffect(() => {
-    const phrase = searchParams.get("query");
-    const page = Number(searchParams.get("page"));
-    setSearchFieldValue(phrase ?? "");
-    getData(page ? page : 1, perPage ?? 20, phrase).then();
-  }, []);
+    if (isMovieListLoading || isSearchMovieListLoading) {
+      dispatch(setMovieLoading(true));
+    } else {
+      dispatch(setMovieLoading(false));
+    }
+  }, [isMovieListLoading, isSearchMovieListLoading]);
 
   return (
-    <AppContextProvider
-      contextValue={{
-        movieList: searchList,
-        isFetchingData: isFetchingData,
-        pagination: pagination,
-        getData: getData,
-      }}
-    >
-      <main data-testid="main-tag">
-        <div className={classes.wrapper}>
-          <div className={classes.leftSide}>
-            <SearchFieldContextProvider
-              contextValue={{
-                searchValue: searchFieldValue,
-                onChangeValue: onSearchValue,
-                onSearch: onSearchClick,
-              }}
-            >
-              <SearchField />
-            </SearchFieldContextProvider>
-            <div className={classes.contentContainer}>
-              <SearchList />
-            </div>
-          </div>
-          <div className={classes.rightSide}>
-            <Outlet />
+    <main data-testid="main-tag">
+      <div className={classes.wrapper}>
+        <div className={classes.leftSide}>
+          <SearchField getMovieListData={getMovieListData} />
+          <div className={classes.contentContainer}>
+            <SearchList getMovieListData={getMovieListData} />
           </div>
         </div>
-      </main>
-    </AppContextProvider>
+        <div className={classes.rightSide}>
+          <Outlet />
+        </div>
+      </div>
+    </main>
   );
 };
 

@@ -3,31 +3,22 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
+import createFetchMock from "vitest-fetch-mock";
 
-vi.mock("react-router-dom", async () => {
-  const mod =
-    await vi.importActual<typeof import("react-router-dom")>(
-      "react-router-dom",
-    );
-  return {
-    ...mod,
-    useParams: vi
-      .fn()
-      .mockReturnValue({ per_page: "10", query: "test", page: "1" }),
-  };
-});
+const fetchMocker = createFetchMock(vi);
+fetchMocker.enableMocks();
 
 describe("Testing Loader component", () => {
-  let main: undefined | HTMLElement;
+  let searchList: undefined | HTMLElement;
 
   beforeEach(() => {
     render(<App />, { wrapper: BrowserRouter });
-    main = screen.getByTestId("main-tag");
+    searchList = screen.getByTestId("search-list");
   });
 
   afterEach(() => {});
 
-  test("is exist", () => {
-    expect(main).toBeInTheDocument();
+  test("is exist list of movie", () => {
+    expect(searchList).toBeInTheDocument();
   });
 });

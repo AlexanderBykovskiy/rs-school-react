@@ -22,28 +22,35 @@ export interface typeMovieItem {
 }
 
 export interface typeMovieResponse extends typeResponsePagination {
-  results: typeMovieItem[];
+  results?: typeMovieItem[];
+}
+
+export interface typeMovieSearchListRequest {
+  pageNumber: number;
+  searchPhrase: string;
 }
 
 export interface typeMovieDetails {
   adult: boolean;
-  backdrop_path: string;
-  budget: number;
-  homepage: string;
+  backdrop_path?: string;
+  budget?: number;
+  homepage?: string;
   id: number;
-  imdb_id: string;
+  imdb_id?: string;
   original_language: string;
   original_title: string;
-  overview: string;
+  overview?: string;
   popularity: number;
   poster_path: string;
   release_date: string;
   revenue: number;
-  runtime: number;
-  status: string;
-  tagline: string;
+  runtime?: number;
+  status?: string;
+  tagline?: string;
   title: string;
-  video: boolean;
+  video?: boolean;
   vote_average: number;
   vote_count: number;
 }
+
+export type typeMovieDetailsResponse = typeMovieDetails;
