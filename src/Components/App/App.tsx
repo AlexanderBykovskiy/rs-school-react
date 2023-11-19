@@ -24,10 +24,14 @@ const App: React.FC = () => {
   const [getSearchMovieList, { isFetching: isSearchMovieListLoading }] =
     useLazyGetSearchListQuery();
 
-  const getMovieListData = async (pageNumber: number, searchPhrase: string) => {
-    const response = searchValue
-      ? await getSearchMovieList({ pageNumber, searchPhrase }).unwrap()
-      : await getMovieList(pageNumber).unwrap();
+  const getMovieListData = async (
+    pageNumber: number,
+    searchPhrase?: string,
+  ) => {
+    const response =
+      searchValue && typeof searchPhrase === "string"
+        ? await getSearchMovieList({ pageNumber, searchPhrase }).unwrap()
+        : await getMovieList(pageNumber).unwrap();
 
     if (response?.results) {
       dispatch(setMovieList(response.results));

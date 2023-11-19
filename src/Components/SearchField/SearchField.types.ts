@@ -1,3 +1,6 @@
 export interface typeSearchFieldProps {
-  getMovieListData: (pageNumber: number, searchPhrase: string) => Promise<void>;
+  getMovieListData: (
+    pageNumber: number,
+    searchPhrase?: string,
+  ) => Promise<void>;
 }
