@@ -1,5 +1,8 @@
 export interface typeSearchListProps {
-  getMovieListData: (pageNumber: number, searchPhrase: string) => Promise<void>;
+  getMovieListData: (
+    pageNumber: number,
+    searchPhrase?: string,
+  ) => Promise<void>;
 }
 
 export interface typeSearchListItemProps {
