@@ -3,6 +3,9 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import Details from "./Details";
 import { BrowserRouter } from "react-router-dom";
+import { store } from "../store/store";
+import React from "react";
+import { Provider } from "react-redux";
 // import createFetchMock from "vitest-fetch-mock"
 
 vi.mock("react-router-dom", async () => {
@@ -91,7 +94,12 @@ describe("Testing Details component", () => {
       "vote_average": 8,
       "vote_count": 2129
     }))*/
-    render(<Details />, { wrapper: BrowserRouter });
+    render(
+      <Provider store={store}>
+        <Details />
+      </Provider>,
+      { wrapper: BrowserRouter },
+    );
     details = screen.getByTestId("details");
     /*image = screen.getByTestId("poster");
     title = screen.getByTestId("title");

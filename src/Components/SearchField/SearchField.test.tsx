@@ -2,29 +2,25 @@ import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import SearchField from "./SearchField";
-import SearchFieldContextProvider from "../SearchFieldContextProvider/SearchFieldContextProvider";
-import { typeSearchFieldContext } from "../SearchFieldContextProvider/SearchFieldContextProvider.types";
 import { userEvent } from "@testing-library/user-event";
+import { store } from "../store/store";
+import React from "react";
+import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
 
 describe("Testing Loader component", () => {
   let searchForm: undefined | HTMLElement;
   let searchInput: undefined | HTMLElement;
   let searchButton: undefined | HTMLElement;
 
-  const onChange = vi.fn();
-  const onSearch = vi.fn();
-
-  const mockData: typeSearchFieldContext = {
-    searchValue: "test",
-    onChangeValue: onChange,
-    onSearch: onSearch,
-  };
+  const getMovieListData = vi.fn();
 
   beforeEach(() => {
     render(
-      <SearchFieldContextProvider contextValue={mockData}>
-        <SearchField />
-      </SearchFieldContextProvider>,
+      <Provider store={store}>
+        <SearchField getMovieListData={getMovieListData} />
+      </Provider>,
+      { wrapper: BrowserRouter },
     );
     searchForm = screen.getByTestId("search-form");
     searchInput = screen.getByTestId("search-input");
@@ -39,13 +35,11 @@ describe("Testing Loader component", () => {
     expect(searchButton).toBeInTheDocument();
   });
 
-  test("testing on change", async () => {
-    if (searchInput) await userEvent.type(searchInput, "test1");
-    expect(onChange).toBeCalledWith("test1");
-  });
-
-  test("testing on search", async () => {
-    if (searchButton) await userEvent.click(searchButton);
-    expect(onSearch).toBeCalled();
+  test("testing fetching data", async () => {
+    if (searchInput && searchButton) {
+      await userEvent.type(searchInput, "test1");
+      await userEvent.click(searchButton);
+      expect(getMovieListData).toBeCalled();
+    }
   });
 });

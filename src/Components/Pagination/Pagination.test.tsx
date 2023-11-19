@@ -4,48 +4,33 @@ import "@testing-library/jest-dom";
 import Pagination from "./Pagination";
 import { BrowserRouter } from "react-router-dom";
 import React from "react";
-import AppContextProvider from "../AppContextProvider/AppContextProvider";
-import { defaultContext } from "../AppContextProvider/AppContextProvider.constants";
-import { typeAppContext } from "../AppContextProvider/AppContextProvider.types";
 import { userEvent } from "@testing-library/user-event";
+import { store } from "../store/store";
+import { Provider } from "react-redux";
 
 describe("Testing Pagination component", () => {
   let pagination: undefined | HTMLElement;
   let buttonList: HTMLElement[];
   let placeholder: HTMLElement[];
-  const getData = vi.fn();
-
-  const paginationRender = (mockContext: typeAppContext) => {
-    render(
-      <AppContextProvider contextValue={mockContext}>
-        <Pagination />
-      </AppContextProvider>,
-      { wrapper: BrowserRouter },
-    );
-    return {
-      pagination: screen.getByTestId("pagination"),
-      buttonList: screen.getAllByTestId("pagination-button"),
-      placeholder: screen.getAllByTestId("pagination-placeholder"),
-    };
-  };
+  const getMovieListData = vi.fn();
 
   describe("test with set 1", () => {
-    const mockContext: typeAppContext = {
-      ...defaultContext,
-      pagination: {
-        pageNumber: 1,
-        totalPages: 10,
-        itemsPerPage: 10,
-        totalElements: 60,
-      },
-      getData: getData,
-    };
-
     beforeEach(() => {
-      const renderData = paginationRender(mockContext);
-      pagination = renderData.pagination;
-      buttonList = renderData.buttonList;
-      placeholder = renderData.placeholder;
+      render(
+        <Provider store={store}>
+          <Pagination
+            pageNumber={1}
+            itemsPerPage={10}
+            totalPages={10}
+            totalElements={60}
+            getMovieListData={getMovieListData}
+          />
+        </Provider>,
+        { wrapper: BrowserRouter },
+      );
+      pagination = screen.getByTestId("pagination");
+      buttonList = screen.queryAllByTestId("pagination-button");
+      placeholder = screen.queryAllByTestId("pagination-placeholder");
     });
 
     afterEach(() => {});
@@ -60,30 +45,30 @@ describe("Testing Pagination component", () => {
     });
 
     test("click button", async () => {
-      if (buttonList.length && buttonList[0])
-        await userEvent.click(buttonList[0]);
-      expect(getData).toBeCalled();
-      expect(location.search.includes("page=1")).toBeTruthy();
+      if (buttonList.length && buttonList[1])
+        await userEvent.click(buttonList[1]);
+      expect(getMovieListData).toBeCalled();
+      expect(location.search.includes("page=2")).toBeTruthy();
     });
   });
 
   describe("test with set 2", () => {
-    const mockContext: typeAppContext = {
-      ...defaultContext,
-      pagination: {
-        pageNumber: 10,
-        totalPages: 10,
-        itemsPerPage: 10,
-        totalElements: 100,
-      },
-      getData: getData,
-    };
-
     beforeEach(() => {
-      const renderData = paginationRender(mockContext);
-      pagination = renderData.pagination;
-      buttonList = renderData.buttonList;
-      placeholder = renderData.placeholder;
+      render(
+        <Provider store={store}>
+          <Pagination
+            pageNumber={10}
+            itemsPerPage={10}
+            totalPages={10}
+            totalElements={100}
+            getMovieListData={getMovieListData}
+          />
+        </Provider>,
+        { wrapper: BrowserRouter },
+      );
+      pagination = screen.getByTestId("pagination");
+      buttonList = screen.queryAllByTestId("pagination-button");
+      placeholder = screen.queryAllByTestId("pagination-placeholder");
     });
 
     afterEach(() => {});
@@ -99,22 +84,22 @@ describe("Testing Pagination component", () => {
   });
 
   describe("test with set 3", () => {
-    const mockContext: typeAppContext = {
-      ...defaultContext,
-      pagination: {
-        pageNumber: 5,
-        totalPages: 20,
-        itemsPerPage: 10,
-        totalElements: 100,
-      },
-      getData: getData,
-    };
-
     beforeEach(() => {
-      const renderData = paginationRender(mockContext);
-      pagination = renderData.pagination;
-      buttonList = renderData.buttonList;
-      placeholder = renderData.placeholder;
+      render(
+        <Provider store={store}>
+          <Pagination
+            pageNumber={5}
+            itemsPerPage={20}
+            totalPages={10}
+            totalElements={100}
+            getMovieListData={getMovieListData}
+          />
+        </Provider>,
+        { wrapper: BrowserRouter },
+      );
+      pagination = screen.getByTestId("pagination");
+      buttonList = screen.queryAllByTestId("pagination-button");
+      placeholder = screen.queryAllByTestId("pagination-placeholder");
     });
 
     afterEach(() => {});

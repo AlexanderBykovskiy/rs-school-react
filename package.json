@@ -52,6 +52,6 @@
     "test": "vitest run",
     "test:ui": "vitest --ui",
     "test:watch": "vitest",
-    "coverage": "vitest run --coverage.enabled --coverage.all --coverage.exclude **/*.types.ts --coverage.exclude **/*.types.tsx --coverage.exclude **/*.constants.ts --coverage.exclude **/*.constants.tsx --coverage.exclude **/*.d.ts"
+    "coverage": "vitest run --coverage.enabled --coverage.all --coverage.exclude **/*.types.ts --coverage.exclude **/*.types.tsx --coverage.exclude **/types.ts --coverage.exclude **/main.tsx --coverage.exclude **/*.constants.ts --coverage.exclude **/*.constants.tsx --coverage.exclude **/*.d.ts"
   }
 }

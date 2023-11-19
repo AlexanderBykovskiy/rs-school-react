@@ -6,7 +6,10 @@ export interface typePaginationObj {
 }
 
 export type typePaginationProps = typePaginationObj & {
-  getMovieListData: (pageNumber: number, searchPhrase: string) => Promise<void>;
+  getMovieListData: (
+    pageNumber: number,
+    searchPhrase?: string,
+  ) => Promise<void>;
 };
 
 export interface typePaginationButtonProps {

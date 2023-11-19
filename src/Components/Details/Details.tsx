@@ -15,7 +15,6 @@ const Details: React.FC = () => {
 
   const getData = async (movieId: number) => {
     const data = await getDetailsData(movieId).unwrap();
-    console.log(data);
     if (data) {
       setDetailsData(data);
     }
