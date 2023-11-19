@@ -35,5 +35,4 @@ export const {
   useLazyGetPopularListQuery,
   useLazyGetSearchListQuery,
   useLazyGetDetailsQuery,
-  useGetDetailsQuery,
 } = movieApi;
