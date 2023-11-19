@@ -24,7 +24,7 @@ const SearchField: React.FC<typeSearchFieldProps> = ({ getMovieListData }) => {
       localStorage.setItem("searchPhrase", searchValue);
       searchParams.delete("page");
       setSearchParams(searchParams);
-      getMovieListData(1, newValue.trim()).then();
+      getMovieListData(1, newValue.trim());
     }
     appDispatch(setValue(newValue));
   };
