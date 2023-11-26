@@ -2,7 +2,7 @@ import React from "react";
 import classes from "./SearchList.styles.module.css";
 import { typeSearchListItemProps } from "./SearchListItem.types";
 import Link from "next/link";
-import {IMG_URL} from "@/api/api.constants";
+import { IMG_URL } from "@/api/api.constants";
 import Image from "next/image";
 
 export const SearchListItem: React.FC<typeSearchListItemProps> = ({
@@ -10,11 +10,8 @@ export const SearchListItem: React.FC<typeSearchListItemProps> = ({
   title,
   releaseData,
   poster_path,
-    searchParams
+  searchParams,
 }) => {
-
-
-
   return (
     <Link
       href={`/${id.toString()}` + searchParams}
@@ -24,7 +21,7 @@ export const SearchListItem: React.FC<typeSearchListItemProps> = ({
     >
       <div className={classes.posterWrapper}>
         <Image
-          src={poster_path ? `${IMG_URL}${poster_path}` : '/no-image.jpg'}
+          src={poster_path ? `${IMG_URL}${poster_path}` : "/no-image.jpg"}
           alt={title}
           width={185}
           height={278}

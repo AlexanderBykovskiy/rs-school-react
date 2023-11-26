@@ -1,27 +1,26 @@
-'use client'
+"use client";
 
 import React from "react";
 import classes from "./Pagination.styles.module.css";
 import PaginationButton from "./PaginationButton";
 import PaginationPlaceholder from "./PaginationPlaceholder";
 import { typePaginationProps } from "./Pagination.types";
-import {paramsCreator} from "@/utils/paramsCreator";
-import {useRouter} from "next/router";
-import {useSearchParams} from "next/navigation";
+import { paramsCreator } from "@/utils/paramsCreator";
+import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
 
 const Pagination: React.FC<typePaginationProps> = ({
   pageNumber,
   totalPages,
 }) => {
-
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const perPage = searchParams.get('per_page');
-  const q = searchParams.get('q');
+  const perPage = searchParams.get("per_page");
+  const q = searchParams.get("q");
 
   const onGoToPage = async (pageNumber: number) => {
-    await router.push('/' + paramsCreator(String(pageNumber), perPage, q));
+    await router.push("/" + paramsCreator(String(pageNumber), perPage, q));
   };
 
   return (

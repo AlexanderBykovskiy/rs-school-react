@@ -1,37 +1,37 @@
-'use client'
+"use client";
 
-import React, {useState} from "react";
+import React, { useState } from "react";
 import classes from "./SearchField.style.module.css";
 import ThrowError from "../ThrowError/ThrowError";
-import {useRouter} from "next/router";
-import {useSearchParams} from "next/navigation";
-import {paramsCreator} from "@/utils/paramsCreator";
-import {typeSearchFieldProps} from "@/components/SearchField/SearchField.types";
+import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
+import { paramsCreator } from "@/utils/paramsCreator";
+import { typeSearchFieldProps } from "@/components/SearchField/SearchField.types";
 
-const SearchField: React.FC<typeSearchFieldProps> = ({searchPhrase}) => {
-
+const SearchField: React.FC<typeSearchFieldProps> = ({ searchPhrase }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const perPage = searchParams.get('per_page');
+  const perPage = searchParams.get("per_page");
 
-  const [searchValue, setSearchValue] = useState(typeof(searchPhrase) === 'string' ?  searchPhrase : '');
+  const [searchValue, setSearchValue] = useState(
+    typeof searchPhrase === "string" ? searchPhrase : "",
+  );
 
   const onChangeValue = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
 
     if (!e.target.value.trim()) {
-      setSearchValue('');
-      await router.push('/' + paramsCreator(undefined, perPage));
+      setSearchValue("");
+      await router.push("/" + paramsCreator(undefined, perPage));
     } else {
       setSearchValue(newValue);
     }
-
   };
 
   const onSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await router.push('/' + paramsCreator(undefined, perPage, searchValue));
+    await router.push("/" + paramsCreator(undefined, perPage, searchValue));
   };
 
   return (

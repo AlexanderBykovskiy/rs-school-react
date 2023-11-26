@@ -1,5 +1,5 @@
-import {typeSearchPhraseFromResponse} from "@/api/api.types";
+import { typeSearchPhraseFromResponse } from "@/api/api.types";
 
 export interface typeSearchFieldProps {
-    searchPhrase: typeSearchPhraseFromResponse
+  searchPhrase: typeSearchPhraseFromResponse;
 }

@@ -5,7 +5,7 @@ export interface typePaginationObj {
   totalPages: number;
 }
 
-export type typePaginationProps = typePaginationObj
+export type typePaginationProps = typePaginationObj;
 
 export interface typePaginationButtonProps {
   title: string;

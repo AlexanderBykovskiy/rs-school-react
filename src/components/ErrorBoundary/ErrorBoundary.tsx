@@ -1,7 +1,7 @@
 import React from "react";
 import { typeProps, typeState } from "./ErrorBoundary.types";
 import classes from "./ErrorBoundary.style.module.css";
-import {font} from "@/styles/fonts";
+import { font } from "@/styles/fonts";
 
 class ErrorBoundary extends React.Component<typeProps, typeState> {
   constructor(props: typeProps) {
@@ -19,7 +19,10 @@ class ErrorBoundary extends React.Component<typeProps, typeState> {
   render() {
     if (this.state.errorInfo) {
       return (
-        <div className={`${classes.wrapper}  ${font.className}`} data-testid="error-boundary-component">
+        <div
+          className={`${classes.wrapper}  ${font.className}`}
+          data-testid="error-boundary-component"
+        >
           <div className={classes.container}>
             <div className={classes.header}>
               <svg

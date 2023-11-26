@@ -1,3 +1,3 @@
-import {Roboto} from "next/font/google";
+import { Roboto } from "next/font/google";
 
-export const font = Roboto({weight: '400', subsets: ['cyrillic']})
+export const font = Roboto({ weight: "400", subsets: ["cyrillic"] });

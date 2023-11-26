@@ -1,27 +1,26 @@
 import React from "react";
 import classes from "./SearchList.styles.module.css";
 import { SearchListItem } from "./SearchListItem";
-import {typeSearchListProps} from "@/components/SearchList/SearchListItem.types";
-import {typePaginationProps} from "@/components/Pagination/Pagination.types";
+import { typeSearchListProps } from "@/components/SearchList/SearchListItem.types";
+import { typePaginationProps } from "@/components/Pagination/Pagination.types";
 import Pagination from "../Pagination/Pagination";
-import {paramsCreator} from "@/utils/paramsCreator";
+import { paramsCreator } from "@/utils/paramsCreator";
 
 const SearchList: React.FC<typeSearchListProps> = ({ data, searchPhrase }) => {
-
-    const pagination: typePaginationProps | null = data
+  const pagination: typePaginationProps | null = data
     ? {
         pageNumber: data.page,
         itemsPerPage: 20,
         totalElements: data.total_results,
         totalPages: data.total_pages,
-    }
-    : null
+      }
+    : null;
 
-    const params = paramsCreator(
-        pagination?.pageNumber ? String(pagination.pageNumber) : null,
-        pagination?.itemsPerPage ? String(pagination.itemsPerPage) : null,
-        searchPhrase ? searchPhrase : null
-        )
+  const params = paramsCreator(
+    pagination?.pageNumber ? String(pagination.pageNumber) : null,
+    pagination?.itemsPerPage ? String(pagination.itemsPerPage) : null,
+    searchPhrase ? searchPhrase : null,
+  );
 
   return (
     <div className={classes.container} data-testid="search-list">
@@ -32,7 +31,7 @@ const SearchList: React.FC<typeSearchListProps> = ({ data, searchPhrase }) => {
       )}
       <div className={classes.wrapper} data-testid="search-list-not-empty">
         {data?.results &&
-            data.results.map((item) => {
+          data.results.map((item) => {
             const releaseData = new Date(item.release_date);
             return (
               <SearchListItem
