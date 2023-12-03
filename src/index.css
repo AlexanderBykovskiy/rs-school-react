@@ -1,3 +1,81 @@
 :root {
 
 }
+
+* {
+    font-family: sans-serif;
+    color: #777;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 380px;
+    margin: 0 auto;
+}
+
+.field-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    position: relative;
+}
+
+.field-wrapper label, .radio-group-title {
+    font-size: 14px;
+}
+
+.form input[type="text"],
+.form input[type="number"],
+.form input[type="email"],
+.form input[type="password"],
+.form select
+{
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form input:focus,
+.form select:focus {
+    outline-color: royalblue;
+    outline-width: 1px;
+}
+
+.horizontal-radio-group {
+    display: flex;
+    gap: 40px;
+}
+
+.radio-row {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.image-wrapper {
+    margin: 10px 0;
+}
+
+.form button {
+    background-color: royalblue;
+    color: #fff;
+    border: none;
+    padding: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.form button:disabled {
+    background-color: #777777;
+    cursor: not-allowed;
+}
+
+.form .error {
+    position: absolute;
+    width: 100%;
+    color: red;
+    font-size: 12px;
+    bottom: -15px;
+}
