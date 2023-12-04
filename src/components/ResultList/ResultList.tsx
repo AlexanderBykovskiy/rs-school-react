@@ -15,15 +15,32 @@ export const ResultList: React.FC = () => {
                 <div className={classes.image}>
                   <img src={item.image} alt="" />
                 </div>
-                <div className={classes.row}><span>Name:</span> <div>{item.name}</div></div>
-                <div className={classes.row}><span>Email:</span> <div>{item.email}</div></div>
-                <div className={classes.row}><span>Age:</span> <div>{item.age}</div></div>
-                <div className={classes.row}><span>Gender:</span> <div>{item.gender}</div></div>
-                <div className={classes.row}><span>Password:</span> <div>{item.password}</div></div>
-                <div className={classes.row}><span>Country:</span> <div>{item.country}</div></div>
-                <div className={classes.row}><span>Accept:</span> <div>{item.accept ? 'I agree' : 'I not agree'}</div></div>
+                <div className={classes.row}>
+                  <span>Name:</span> <div>{item.name}</div>
+                </div>
+                <div className={classes.row}>
+                  <span>Email:</span> <div>{item.email}</div>
+                </div>
+                <div className={classes.row}>
+                  <span>Age:</span> <div>{item.age}</div>
+                </div>
+                <div className={classes.row}>
+                  <span>Gender:</span> <div>{item.gender}</div>
+                </div>
+                <div className={classes.row}>
+                  <span>Password:</span> <div>{item.password}</div>
+                </div>
+                <div className={classes.row}>
+                  <span>Country:</span> <div>{item.country}</div>
+                </div>
+                <div className={classes.row}>
+                  <span>Accept:</span>{" "}
+                  <div>{item.accept ? "I agree" : "I not agree"}</div>
+                </div>
               </div>
-              {index !== resultList.length - 1 && <div className={classes.separator}></div>}
+              {index !== resultList.length - 1 && (
+                <div className={classes.separator}></div>
+              )}
             </React.Fragment>
           ))}
         </div>
