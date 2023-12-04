@@ -1,0 +1,43 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 380px;
+    margin: 0 auto 40px;
+}
+
+.empty {
+    justify-self: center;
+    align-self: center;
+}
+
+.item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.item span {
+    font-size: 14px;
+}
+
+.separator {
+    height: 1px;
+    background-color: #ccc;
+    margin: 20px 0;
+}
+.image {
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+}
+
+.image > img {
+    width: 200px;
+    object-fit: contain;
+}
+
+.row {
+    display: flex;
+    gap: 10px
+}

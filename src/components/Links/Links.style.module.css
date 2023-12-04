@@ -1,0 +1,19 @@
+.wrapper {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px
+}
+
+.wrapper > a {
+    color: cornflowerblue;
+    text-decoration-color: transparent;
+    text-underline-offset: 2px;
+    transition: all ease-in 0.2s;
+}
+
+.wrapper > a:hover {
+    color: mediumblue;
+    text-decoration-color: mediumblue;
+}
