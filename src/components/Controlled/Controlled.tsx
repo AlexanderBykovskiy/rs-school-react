@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../store/store.ts";
 import { formSchema } from "./scheme.ts";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { addResult } from "../../store/resultsReducer.ts";
-import {genderList, typeResult} from "../../store/types.ts";
+import { genderList, typeResult } from "../../store/types.ts";
 import { useNavigate } from "react-router-dom";
 
 function getBase64(file: Blob) {
@@ -39,7 +39,7 @@ export const Controlled: React.FC = () => {
     if (file) {
       const myFile = (await getBase64(file as unknown as Blob)) as string;
 
-      console.log(data.gender)
+      console.log(data.gender);
 
       const formObj: typeResult = {
         id: Date.now(),

@@ -141,7 +141,7 @@ export const Uncontrolled: React.FC = () => {
         age: Number(age.current?.value) ?? 0,
         email: email.current?.value ?? "",
         password: password.current?.value ?? "",
-        gender: (gender.current?.checked) ? genderList.male : genderList.female,
+        gender: gender.current?.checked ? genderList.male : genderList.female,
         accept: !!accept.current?.checked,
         image: myFile,
         country: country.current?.value ?? "",
@@ -208,7 +208,12 @@ export const Uncontrolled: React.FC = () => {
         <div className="field-wrapper">
           <div className="radio-row">
             <div className="radio-wrapper">
-              <input type="radio" name="group" id="woman" value={genderList.female} />
+              <input
+                type="radio"
+                name="group"
+                id="woman"
+                value={genderList.female}
+              />
               <span aria-hidden="true"></span>
             </div>
             <label htmlFor="woman">Woman</label>
